@@ -1,4 +1,4 @@
-AIR POLLUTION MONITORING SYSTEM - VIVADO-ONLY SIMULATION
+1.AIR POLLUTION MONITORING SYSTEM - VIVADO-ONLY SIMULATION
 ==========================================================
 
 Purpose
@@ -86,7 +86,7 @@ Possible future extensions
 - Java/HTTP interface outside Vivado
 - FPGA-board implementation after simulation is verified
   
-IOT HEALTH MONITORING SYSTEM
+2.IOT HEALTH MONITORING SYSTEM
 ==========================================================
 
 Hardware-Free Vivado RTL Simulation
