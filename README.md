@@ -85,6 +85,8 @@ Possible future extensions
 - Time/date tagging for history
 - Java/HTTP interface outside Vivado
 - FPGA-board implementation after simulation is verified
+
+  ------------------------------------------------------------------------------------
   
 2.IOT HEALTH MONITORING SYSTEM
 ==========================================================
@@ -159,7 +161,7 @@ Status:
 - 10 = DANGER
 
 The physical sensors, Wi-Fi and cloud are represented by simulation equivalents.
---------------------------------------------------------------------------------
+
 
 ------------------------------------------------------------------------------------
 
