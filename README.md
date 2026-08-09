@@ -161,6 +161,8 @@ Status:
 The physical sensors, Wi-Fi and cloud are represented by simulation equivalents.
 --------------------------------------------------------------------------------
 
+------------------------------------------------------------------------------------
+
 # 3.FPGA-Based Smart Energy Meter — Vivado Simulation
 
 ## Project purpose
