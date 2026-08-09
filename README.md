@@ -117,35 +117,35 @@ RUN:
 
 WAVEFORM:
 -------
-clk
-rst
-sample_en
-heart_rate_raw
-temperature_raw
-spo2_raw
-current_heart_rate
-current_temperature
-current_spo2
-sensor_valid
-sensor_stable
-sensor_error
-warning
-danger
-status
-write_addr
-read_addr
-read_heart_rate
-read_temperature
-read_spo2
-read_status
-packet_busy
-packet_done
-packet_index
-tx_data
-tx_start
-tx_busy
-tx_done
-tx_serial
+- clk
+- rst
+- sample_en
+- heart_rate_raw
+- temperature_raw
+- spo2_raw
+- current_heart_rate
+- current_temperature
+- current_spo2
+- sensor_valid
+- sensor_stable
+- sensor_error
+- warning
+- danger
+- status
+- write_addr
+- read_addr
+- read_heart_rate
+- read_temperature
+- read_spo2
+- read_status
+- packet_busy
+- packet_done
+- packet_index
+- tx_data
+- tx_start
+- tx_busy
+- tx_done
+- tx_serial
 
 Temperature representation:
 -------
