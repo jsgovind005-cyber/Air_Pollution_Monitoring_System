@@ -149,15 +149,15 @@ tx_serial
 
 Temperature representation:
 -------
-367 = 36.7 C
-390 = 39.0 C
+- 367 = 36.7 C
+- 390 = 39.0 C
 
 Status:
 -------
-00 = NORMAL
-01 = WARNING
-10 = DANGER
+- 00 = NORMAL
+- 01 = WARNING
+- 10 = DANGER
 
 The physical sensors, Wi-Fi and cloud are represented by simulation equivalents.
--------
+--------------------------------------------------------------------------------
 
