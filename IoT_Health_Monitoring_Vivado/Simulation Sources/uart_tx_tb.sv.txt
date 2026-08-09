@@ -1,0 +1,78 @@
+
+
+module uart_tx_tb;
+
+    logic clk;
+    logic rst;
+
+    logic [7:0] tx_data;
+    logic tx_start;
+
+    logic tx_serial;
+    logic tx_busy;
+    logic tx_done;
+
+    initial clk = 0;
+    always #5 clk = ~clk;
+
+    uart_tx #(
+        .CLKS_PER_BIT(4)
+    ) dut (
+        .clk(clk),
+        .rst(rst),
+
+        .tx_data(tx_data),
+        .tx_start(tx_start),
+
+        .tx_serial(tx_serial),
+        .tx_busy(tx_busy),
+        .tx_done(tx_done)
+    );
+
+    initial begin
+
+        rst      = 1;
+        tx_data  = 8'hA5;
+        tx_start = 0;
+
+        repeat(3) @(negedge clk);
+
+        rst = 0;
+
+        // Send A5
+        @(negedge clk);
+        tx_data  = 8'hA5;
+        tx_start = 1;
+
+        @(negedge clk);
+        tx_start = 0;
+
+        wait(tx_done);
+
+        // Send 5A
+        @(negedge clk);
+        tx_data  = 8'h5A;
+        tx_start = 1;
+
+        @(negedge clk);
+        tx_start = 0;
+
+        wait(tx_done);
+
+        // Send 48
+        @(negedge clk);
+        tx_data  = 8'h48;
+        tx_start = 1;
+
+        @(negedge clk);
+        tx_start = 0;
+
+        wait(tx_done);
+
+        #100;
+
+        $finish;
+
+    end
+
+endmodule

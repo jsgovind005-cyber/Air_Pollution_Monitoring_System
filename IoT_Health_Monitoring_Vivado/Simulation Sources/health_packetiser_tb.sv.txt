@@ -1,0 +1,137 @@
+module health_packetizer_tb;
+
+    logic clk;
+    logic rst;
+    logic sample_en;
+
+    logic [15:0] heart_rate;
+    logic [15:0] temperature;
+    logic [15:0] spo2;
+    logic [1:0]  status;
+
+    logic        tx_busy;
+    logic        tx_done;
+
+    logic [7:0]  tx_data;
+    logic        tx_start;
+
+    logic        packet_busy;
+    logic        packet_done;
+    logic [3:0]  packet_index;
+
+    // Clock = 100 MHz
+    initial clk = 1'b0;
+    always #5 clk = ~clk;
+
+    // DUT
+    health_packetizer dut (
+        .clk(clk),
+        .rst(rst),
+        .sample_en(sample_en),
+
+        .heart_rate(heart_rate),
+        .temperature(temperature),
+        .spo2(spo2),
+        .status(status),
+
+        .tx_busy(tx_busy),
+        .tx_done(tx_done),
+
+        .tx_data(tx_data),
+        .tx_start(tx_start),
+
+        .packet_busy(packet_busy),
+        .packet_done(packet_done),
+        .packet_index(packet_index)
+    );
+
+    // ------------------------------------------------
+    // TX MODEL
+    // Simulates successful transmission of each byte
+    // ------------------------------------------------
+
+    always @(posedge clk) begin
+        #1;
+
+        if (tx_start) begin
+
+            $display(
+                "[%0t ns] BYTE %0d = %02h",
+                $time,
+                packet_index,
+                tx_data
+            );
+
+            // Tell packetizer that transmitter is busy
+            tx_busy = 1'b1;
+
+            // Simulate byte transmission time
+            repeat(4) @(posedge clk);
+
+            #1;
+
+            tx_busy = 1'b0;
+            tx_done = 1'b1;
+
+            @(posedge clk);
+
+            #1;
+            tx_done = 1'b0;
+        end
+    end
+
+    // ------------------------------------------------
+    // MAIN TEST
+    // ------------------------------------------------
+
+    initial begin
+
+        rst         = 1'b1;
+        sample_en   = 1'b0;
+
+        heart_rate  = 16'd0;
+        temperature = 16'd0;
+        spo2        = 16'd0;
+        status      = 2'b00;
+
+        tx_busy     = 1'b0;
+        tx_done     = 1'b0;
+
+        // Reset
+        repeat(4) @(negedge clk);
+
+        rst = 1'b0;
+
+        // ---------------------------------------------
+        // NORMAL HEALTH DATA
+        // ---------------------------------------------
+
+        @(negedge clk);
+
+        heart_rate  = 16'd72;
+        temperature = 16'd367;
+        spo2        = 16'd98;
+        status      = 2'b00;
+
+        sample_en = 1'b1;
+
+        @(negedge clk);
+
+        sample_en = 1'b0;
+
+        // Wait until complete packet
+        wait(packet_done == 1'b1);
+
+        #20;
+
+        $display("---------------------------------------");
+        $display("PACKET TRANSMISSION COMPLETE");
+        $display("---------------------------------------");
+
+        #100;
+
+        $finish;
+
+    end
+
+endmodule
