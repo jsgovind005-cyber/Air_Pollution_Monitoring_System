@@ -161,3 +161,77 @@ Status:
 The physical sensors, Wi-Fi and cloud are represented by simulation equivalents.
 --------------------------------------------------------------------------------
 
+# 3.FPGA-Based Smart Energy Meter — Vivado Simulation
+
+## Project purpose
+
+This is a software-only RTL implementation of the Smart Energy Meter internship project.
+
+The physical voltage/current sensors are represented by synthesizable simulation models.
+The project demonstrates:
+
+- virtual appliance/load generation
+- voltage and current sensor modeling
+- power calculation
+- cumulative energy calculation
+- threshold-based alerts
+- alert state controller
+- billing estimate
+- internal data packet generation
+- serial packet transmission
+- Vivado behavioral simulation
+
+## Important scope
+
+This project is a simulation/RTL prototype. It does not claim to physically measure mains electricity.
+Actual ACS712/CT/ZMPT101B interfacing, ADC circuitry, Wi-Fi/GSM and cloud deployment are future hardware/integration stages.
+
+## Units
+
+- voltage_x10: voltage multiplied by 10. Example: 2300 = 230.0 V
+- current_x100: current multiplied by 100. Example: 200 = 2.00 A
+- power_w: watts
+- energy_wh: watt-hours
+- cost_rupees: integer rupees in the simulation
+
+## Default thresholds
+
+- Warning: >= 1500 W
+- Danger: >= 2500 W
+- Tariff: Rs.7/kWh
+
+## Vivado setup
+
+1. Create a new RTL Project.
+2. Add all files under `rtl/` as Design Sources.
+3. Add `sim/smart_energy_meter_tb.sv` as a Simulation Source.
+4. Set `smart_energy_meter_tb` as simulation top.
+5. Run Behavioral Simulation.
+6. Add these signals to the waveform:
+   - clk
+   - rst
+   - light_on
+   - fan_on
+   - tv_on
+   - computer_on
+   - ac_on
+   - load_power_w
+   - voltage_x10
+   - current_x100
+   - power_w
+   - energy_wh
+   - cost_rupees
+   - warning
+   - danger
+   - alert
+   - alert_code
+   - uart_tx
+   - uart_busy
+
+## Recommended presentation
+
+Explain the architecture as:
+
+Virtual Load -> Sensor Model -> Power -> Energy -> Alert/Billing -> Packetizer -> UART
+
+The physical sensor and communication interfaces can later be substituted with actual FPGA I/O, ADC and communication IP/hardware.
