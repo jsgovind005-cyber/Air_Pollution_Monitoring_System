@@ -94,27 +94,27 @@ Hardware-Free Vivado RTL Simulation
 
 
 DESIGN SOURCES:
--------
-sensor_calibration.sv
-sensor_stability_checker.sv
-health_threshold_detector.sv
-health_monitor.sv
-health_data_logger.sv
-health_packetizer.sv
-uart_tx.sv
-health_monitor_top.sv
+--------------
+-sensor_calibration.sv
+-sensor_stability_checker.sv
+-health_threshold_detector.sv
+-health_monitor.sv
+-health_data_logger.sv
+-health_packetizer.sv
+-uart_tx.sv
+-health_monitor_top.sv
 
 SIMULATION SOURCE:
 -------
-health_monitor_tb.sv
+-health_monitor_tb.sv
 
 SET SIMULATION TOP:
 -------
-health_monitor_tb
+-health_monitor_tb
 
 RUN:
 -------
-Run Simulation -> Run Behavioral Simulation
+-Run Simulation -> Run Behavioral Simulation
 
 WAVEFORM:
 -------
