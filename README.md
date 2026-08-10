@@ -239,3 +239,81 @@ Explain the architecture as:
 Virtual Load -> Sensor Model -> Power -> Energy -> Alert/Billing -> Packetizer -> UART
 
 The physical sensor and communication interfaces can later be substituted with actual FPGA I/O, ADC and communication IP/hardware.
+
+---------------------------------------------------------------------------------------------------------------------------------------
+  
+# 4. Smart Traffic Light Control System — Arduino Simulation
+
+## Basis
+This simulation implements the supplied internship brief:
+- real-time traffic-density sensing
+- adaptive signal timing / route prioritization
+- LED traffic lights
+- software simulation
+- serial monitoring of traffic density and selected lane
+
+The supplied PDF lists Arduino/Raspberry Pi, vehicle-detection sensors, Arduino IDE/Python, optional Proteus/Tinkercad/MATLAB Simulink simulation, and optional IoT/dashboard communication.
+
+## Simulation model
+The included Wokwi diagram uses an **Arduino Mega** because it provides enough GPIO pins for 8 sensor inputs and 12 traffic-light LED outputs. Because a pure software simulation does not have physical IR sensors, **two pushbuttons per lane are used as IR-sensor emulators**:
+- Button released = no vehicle (`HIGH`)
+- Button pressed = vehicle detected (`LOW`)
+- Each lane therefore has a density score from 0 to 2.
+
+### Lanes
+| Lane | Sensor 1 | Sensor 2 | Red | Yellow | Green |
+|---|---:|---:|---:|---:|---:|
+| L1 | D2 | D3 | D10 | D11 | D12 |
+| L2 | D4 | D5 | D13 | A0 | A1 |
+| L3 | D6 | D7 | A3 | A4 | A2 |
+| L4 | D8 | D9 | A3* | A5 | A7 |
+
+> For an actual Arduino Uno, avoid using A6/A7 as digital outputs. The provided sketch is intended as a logic reference; use an Arduino Mega, or remap the last lane's LEDs to free digital pins.
+
+## Recommended clean Uno pin assignment
+For the most reliable Uno simulation, use this mapping instead:
+
+- L1 IR: D2, D3 | LEDs: D10, D11, D12
+- L2 IR: D4, D5 | LEDs: D13, A0, A1
+- L3 IR: D6, D7 | LEDs: A2, A3, A4
+- L4 IR: D8, D9 | LEDs: A5, A6, A7
+
+If using an Uno model that does not expose A6/A7 as digital GPIO, change the last three LED pins to another Arduino model or reduce each lane to two LEDs for the simulation.
+
+## How the controller works
+1. Read all eight vehicle-detection inputs.
+2. Count active sensors in each lane.
+3. Find the lane with maximum density.
+4. Give that lane GREEN.
+5. Other lanes remain RED.
+6. After the green interval, the selected lane becomes YELLOW.
+7. After yellow, all lanes become RED briefly.
+8. Re-evaluate density and select the next lane.
+9. Equal-density lanes are handled in round-robin order.
+
+## Threshold / decision rule
+There is no numerical threshold in the supplied brief. In this simulation, the adaptive decision threshold is:
+**maximum density among the four lanes**.
+
+Example:
+- L1 = 0
+- L2 = 2
+- L3 = 1
+- L4 = 0
+
+Then L2 receives green because it has the highest measured traffic density.
+
+## Simulation procedure
+1. Open the project in Arduino IDE or a compatible Arduino simulator.
+2. Upload `smart_traffic_light.ino`.
+3. Start the simulation.
+4. Press different lane sensor buttons to emulate vehicles.
+5. Observe the red/yellow/green LEDs.
+6. Open Serial Monitor at 9600 baud.
+7. The monitor reports the selected lane and density of every lane.
+
+## Expected result
+When traffic density changes, the controller changes the selected green lane at the next decision point. Thus, a heavily congested lane is prioritized instead of using a fixed sequence.
+
+This demonstrates the core objective in the supplied PDF: dynamically adjusting signal control based on real-time traffic density.
+
